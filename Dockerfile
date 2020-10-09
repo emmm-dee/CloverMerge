@@ -1,7 +1,5 @@
 FROM php:7.2-cli-alpine
 
-LABEL maintainers="me@dyl.dog"
-
 COPY --from=composer:1.6 /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
@@ -12,5 +10,7 @@ RUN composer install --no-dev --no-suggest --no-interaction
 COPY . ./
 
 RUN composer dump-autoload --optimize
+
+COPY php-custom.ini "$PHP_INI_DIR/conf.d/"
 
 ENTRYPOINT [ "./clover-merge" ]
